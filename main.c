@@ -23,7 +23,7 @@ int main(int argc, char* argv[]){
     }
     strncpy(nick, argv[2], MAX_NICK_LEN-1);
     nick[MAX_NICK_LEN-1]='\0';
-    printf("Добро пожаловать : %s", argv[2]);
+    printf("Добро пожаловать : %s\n", argv[2]);
     pthread_t thread_sender, thread_reciever;
     port = atoi(argv[1]);
     pthread_create(&thread_reciever, NULL, reciever, NULL);
@@ -40,12 +40,13 @@ void* sender(void* data) {
     struct sockaddr_in br_addr = {
         .sin_family = AF_INET,
         .sin_port = htons(port),
-        .sin_addr.s_addr = inet_addr("192.168.50.255")  // Ваш broadcast!
+        .sin_addr.s_addr = inet_addr("255.255.255.255")  // Ваш broadcast!
     };
 
     while (1) {
         char msg[MAX_MSG_LEN];
         fgets(msg, sizeof(msg), stdin);
+        printf("\033[1A\033[K");
         if(sendto(socket_s, msg, strlen(msg), 0, (struct sockaddr*)&br_addr, sizeof(br_addr)) == -1){
             perror(":(");
         }
@@ -58,7 +59,7 @@ void* reciever(void* data){
     struct sockaddr_in my_addr, other_addr;
     socklen_t addr_len = sizeof(other_addr);
     socket_r = socket(AF_INET, SOCK_DGRAM, 0);
-    setsockopt(socket_r, SOL_SOCKET, SO_BROADCAST, (int*)1, sizeof(int));
+    setsockopt(socket_r, SOL_SOCKET, SO_BROADCAST, &(int){1}, sizeof(int));
     memset(&my_addr, 0, sizeof(my_addr));
     my_addr.sin_family = AF_INET;
     my_addr.sin_addr.s_addr = INADDR_ANY;
