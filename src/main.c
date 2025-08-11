@@ -40,7 +40,7 @@ void* sender(void* data) {
     struct sockaddr_in br_addr = {
         .sin_family = AF_INET,
         .sin_port = htons(port),
-        .sin_addr.s_addr = inet_addr("255.255.255.255")  // Ваш broadcast!
+        .sin_addr.s_addr = INADDR_BROADCAST  // Ваш broadcast!
     };
 
     while (1) {
@@ -70,7 +70,7 @@ void* reciever(void* data){
         if(msg_b > 0){
             buffer[msg_b] = '\0';
             char* msg = buffer;
-            printf("[%s]%s", inet_ntoa(other_addr.sin_addr), msg);
+            printf("[%s]%s:%s", inet_ntoa(other_addr.sin_addr), nick, msg);
         }
     }
     close(socket_r);

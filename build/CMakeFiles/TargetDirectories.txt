@@ -1,0 +1,7 @@
+/home/giorno/ipv4_chat/build/CMakeFiles/chat.dir
+/home/giorno/ipv4_chat/build/CMakeFiles/edit_cache.dir
+/home/giorno/ipv4_chat/build/CMakeFiles/rebuild_cache.dir
+/home/giorno/ipv4_chat/build/CMakeFiles/list_install_components.dir
+/home/giorno/ipv4_chat/build/CMakeFiles/install.dir
+/home/giorno/ipv4_chat/build/CMakeFiles/install/local.dir
+/home/giorno/ipv4_chat/build/CMakeFiles/install/strip.dir

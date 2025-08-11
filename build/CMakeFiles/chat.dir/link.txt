@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -Wl,--dependency-file=CMakeFiles/chat.dir/link.d CMakeFiles/chat.dir/src/main.c.o -o chat  -lpthread
