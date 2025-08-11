@@ -33,27 +33,23 @@ int main(int argc, char* argv[]){
     
 }
 
-void* sender(void* data){
-    char full_msg[MAX_MSG_LEN+MAX_NICK_LEN+2];
-    char buffer[MAX_MSG_LEN];
-    int socket_s;
-    struct sockaddr_in br_addr;
-    socket_s = socket(AF_INET, SOCK_DGRAM, 0);
-    setsockopt(socket_s, SOL_SOCKET, SO_BROADCAST, (int*)1, sizeof(int));
-    memset(&br_addr, 0, sizeof(br_addr));
-    br_addr.sin_family = AF_INET;
-    br_addr.sin_addr.s_addr = INADDR_ANY;
-    br_addr.sin_port = htons(port);
-    bind(socket_s, (struct sockaddr*)&br_addr, sizeof(br_addr));
-    while(1){
-        fgets(buffer, MAX_MSG_LEN, stdin);
-        snprintf(full_msg, sizeof(full_msg), "%s:%s", nick, buffer);
-        if(sendto(socket_s, full_msg, strlen(full_msg), 0, (struct sockaddr*)&br_addr, sizeof(br_addr)) == -1){
-            perror("send failed");
-        };
+void* sender(void* data) {
+    int socket_s = socket(AF_INET, SOCK_DGRAM, 0);
+    setsockopt(socket_s, SOL_SOCKET, SO_BROADCAST, &(int){1}, sizeof(int));
+
+    struct sockaddr_in br_addr = {
+        .sin_family = AF_INET,
+        .sin_port = htons(port),
+        .sin_addr.s_addr = inet_addr("192.168.50.255")  // Ваш broadcast!
+    };
+
+    while (1) {
+        char msg[MAX_MSG_LEN];
+        fgets(msg, sizeof(msg), stdin);
+        if(sendto(socket_s, msg, strlen(msg), 0, (struct sockaddr*)&br_addr, sizeof(br_addr)) == -1){
+            perror(":(");
+        }
     }
-    close(socket_s);
-    return NULL;
 }
 
 void* reciever(void* data){
